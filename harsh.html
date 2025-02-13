@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Escape Room - Tech Event</title>
+    <style>
+        /* General body style */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1e1e2f;
+            color: #f1f1f1;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #00aaff;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            margin-top: 20px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #ddd;
+            margin-top: 5px;
+        }
+
+        /* Container for the page */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #2a2a3b;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Button styling */
+        .button {
+            background-color: #00aaff;
+            border: none;
+            padding: 15px 30px;
+            color: #fff;
+            font-size: 1.1rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .button:hover {
+            background-color: #0088cc;
+            transform: scale(1.05);
+        }
+
+        .button:active {
+            background-color: #0077b3;
+        }
+
+        /* Input fields */
+        .input {
+            padding: 10px;
+            width: 300px;
+            font-size: 1rem;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background-color: #333;
+            color: #fff;
+        }
+
+        /* Hide elements */
+        .hidden {
+            display: none;
+        }
+
+        /* Password input section */
+        #passwordContainer {
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        #passwordMessage {
+            color: red;
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+
+        /* Puzzle container */
+        .puzzle-container {
+            background-color: #3a3a52;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .puzzle-container h2 {
+            color: #00aaff;
+        }
+
+        /* Scoreboard section */
+        .scoreboard-container {
+            margin-top: 50px;
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .scoreboard-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .scoreboard-table, th, td {
+            border: 1px solid #444;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #00aaff;
+            color: #fff;
+        }
+
+        td {
+            background-color: #2a2a3b;
+        }
+
+        /* Media Queries for responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+                padding: 15px;
+            }
+
+            .input {
+                width: 80%;
+            }
+
+            .button {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Welcome to the Digital Escape Room!</h1>
+        <p>Complete your assigned puzzles to escape!</p>
+
+        <!-- Password input for coordinator -->
+        <div id="passwordContainer">
+            <label for="password" style="font-size: 1.2rem;">Enter Password (Coordinators only): </label>
+            <input type="password" id="password" class="input" placeholder="Password">
+            <button class="button" onclick="showScoreboard()">Submit</button>
+            <p id="passwordMessage"></p>
+        </div>
+
+        <!-- Team Selector and Start Game -->
+        <label for="team" style="font-size: 1.2rem;">Select your Team: </label>
+        <select id="team" class="input">
+            <option value="team1">Team 1</option>
+            <option value="team2">Team 2</option>
+            <option value="team3">Team 3</option>
+            <option value="team4">Team 4</option>
+            <option value="team5">Team 5</option>
+        </select>
+        <button class="button" onclick="startGame()">Start Game</button>
+
+        <!-- Puzzle sections for each team -->
+        <div id="team1Puzzles" class="hidden">
+            <div class="puzzle-container" id="puzzle1">
+                <h2>Puzzle 1 - Simple Math</h2>
+                <p>What is 25 + 37?</p>
+                <input class="input" type="text" id="answer1" placeholder="Enter answer">
+                <button class="button" onclick="checkAnswer(1, 'team1')">Submit Answer</button>
+                <p id="message1"></p>
+            </div>
+
+            <div class="puzzle-container hidden" id="puzzle2">
+                <h2>Puzzle 2 - Cipher Puzzle</h2>
+                <p>What is the decoded message: <strong>U29tZSBsYW5ndWFnZSB0byBmb2xsb3cgY2FzZXMu</strong>?</p>
+                <input class="input" type="text" id="answer2" placeholder="Enter answer">
+                <button class="button" onclick="checkAnswer(2, 'team1')">Submit Answer</button>
+                <p id="message2"></p>
+            </div>
+
+            <!-- Add more puzzles here for team 1 -->
+        </div>
+
+        <!-- Scoreboard for event coordinators -->
+        <div id="scoreboard" class="scoreboard-container hidden">
+            <h2>Scoreboard</h2>
+            <table class="scoreboard-table">
+                <thead>
+                    <tr>
+                        <th>Team</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody id="scoreboardBody">
+                    <!-- Scores will be displayed here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Scoreboard tracking
+        const teamScores = {};
+
+        // Show the scoreboard for the coordinator
+        function showScoreboard() {
+            const password = document.getElementById("password").value;
+            const correctPassword = "coordinator123"; // password for the coordinator
+            if (password === correctPassword) {
+                document.getElementById("passwordMessage").textContent = "";
+                document.getElementById("password").disabled = true;
+
+                // Show the scoreboard only for the coordinator
+                const scoreboardBody = document.getElementById("scoreboardBody");
+                scoreboardBody.innerHTML = ""; // Clear existing scores
+
+                // Add teams' scores to the scoreboard
+                for (const [team, score] of Object.entries(teamScores)) {
+                    const row = document.createElement("tr");
+                    const teamCell = document.createElement("td");
+                    teamCell.textContent = team;
+                    const scoreCell = document.createElement("td");
+                    scoreCell.textContent = score;
+                    row.appendChild(teamCell);
+                    row.appendChild(scoreCell);
+                    scoreboardBody.appendChild(row);
+                }
+
+                document.getElementById("scoreboard").classList.remove("hidden"); // Show the scoreboard
+            } else {
+                document.getElementById("passwordMessage").textContent = "Incorrect password!";
+            }
+        }
+
+        // Function to start the game for selected team
+        function startGame() {
+            const team = document.getElementById("team").value;
+
+            // Hide all team puzzles first
+            document.getElementById("team1Puzzles").classList.add("hidden");
+
+            // Show puzzles based on selected team
+            if (team === "team1") {
+                document.getElementById("team1Puzzles").classList.remove("hidden");
+            }
+            // Add logic for other teams...
+        }
+
+        // Function to check the answer and handle puzzle progress
+        function checkAnswer(puzzleNumber, team) {
+            let answer = document.getElementById(`answer${puzzleNumber}`).value.toLowerCase();
+            let correctAnswer = "";
+
+            switch (puzzleNumber) {
+                case 1: correctAnswer = "62"; break;
+                case 2: correctAnswer = "some language to follow cases"; break;
+                // Add other cases for puzzles...
+            }
+
+            if (answer === correctAnswer) {
+                document.getElementById(`message${puzzleNumber}`).textContent = "Correct! Proceeding to the next puzzle.";
+                showNextPuzzle(puzzleNumber, team);
+                updateScore(team);
+            } else {
+                document.getElementById(`message${puzzleNumber}`).textContent = "Incorrect, try again!";
+            }
+        }
+
+        // Function to show the next puzzle for a team
+        function showNextPuzzle(puzzleNumber, team) {
+            const currentPuzzle = document.getElementById(`puzzle${puzzleNumber}`);
+            const nextPuzzle = document.getElementById(`puzzle${puzzleNumber + 1}`);
+
+            // Hide current puzzle and show the next one
+            currentPuzzle.classList.add("hidden");
+            if (nextPuzzle) {
+                nextPuzzle.classList.remove("hidden");
+            }
+        }
+
+        // Function to update the score
+        function updateScore(team) {
+            if (!teamScores[team]) {
+                teamScores[team] = 0;
+            }
+            teamScores[team] += 1;
+
+            alert(`Team ${team} score: ${teamScores[team]}`);
+        }
+    </script>
+</body>
+</html>
